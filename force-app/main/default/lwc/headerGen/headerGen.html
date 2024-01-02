@@ -1,0 +1,29 @@
+<template>
+    <header class="slds-page-header">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <template if:true={showIcon}>
+                        <div class="slds-media__figure">
+                            <lightning-icon icon-name={iconName} size="small"></lightning-icon>
+                        </div>
+                    </template>
+                    <div class="slds-media__body">
+                        <template if:true={isHeading1}>
+                            
+                                
+                            
+                            <h1 class="slds-page-header__title slds-truncate slds-text-heading_small" title={headerTitle}><lightning-icon icon-name={iconName} size="small" style="margin-left: 5px;"></lightning-icon> {headerTitle}</h1>
+                        </template>
+                        <template if:true={isHeading3}>
+                            <h3 class="slds-page-header__title slds-page-header__title slds-truncate" title={headerTitle}>{headerTitle}</h3>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-page-header__col-actions">
+                
+            </div>
+        </div>
+    </header>
+</template>

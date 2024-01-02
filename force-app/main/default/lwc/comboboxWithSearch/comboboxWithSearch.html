@@ -1,0 +1,30 @@
+<!-- multiSelectComboBox.html -->
+<template>
+    <lightning-card title="Multi-Select Combo Box">
+        <lightning-layout>
+            <lightning-layout-item size="6">
+                <lightning-input
+                    type="search"
+                    label="Search"
+                    value={searchTerm}
+                    onchange={handleSearch}
+                ></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item size="6">
+                <lightning-button
+                    label={selectAllLabel}
+                    onclick={handleSelectAll}
+                    variant="brand"
+                ></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-combobox
+            label="Select Items"
+            name="selectedItems"
+            value={selectedItems}
+            options={filteredOptions}
+            onchange={handleSelectionChange}
+            multiple
+        ></lightning-combobox>
+    </lightning-card>
+</template>

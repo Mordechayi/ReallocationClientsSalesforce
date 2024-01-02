@@ -1,0 +1,209 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <!-- Section: Header -->
+  <!-- Custom header component displaying the title "Reallocation Clients" -->
+  <c-header-card2 icon-name = "utility:chevronright" title="Reallocation Clients" show-icon = "true"></c-header-card2>
+
+  <!-- Main container for the application -->
+  <lightning-card >
+    <!-- Tab layout for the application with a specific style variant -->
+    <lightning-tabset variant="RealloctionClientApp">
+      <!-- Tab for Single Client Reallocation -->
+      <lightning-tab label="Single Client Reallocation">
+        <!-- Card for single client reallocation content -->
+        <lightning-card>
+          <!-- Custom header for the section -->
+          <c-header-gen icon-name = "utility:chevronright" header-title="Select Main SA" is-heading1></c-header-gen>
+
+          <!-- Section: Form Fields -->
+          <!-- Layout grid for the comboboxes and action button -->
+          <div class="slds-grid slds-gutters " style="margin: 0.2% ">
+            <!-- Country selection combobox -->
+            <div class="slds-col">
+
+              <c-combobox name=comboboxCountry label="Country" options={getOptionsCountry} value={valueCountry}
+                multiselect="true" onchange={handleComboboxCountryChange} autocomplete="true"></c-combobox>
+
+              <!-- lazy-search="true"  onsearch={handleComboboxCountrySearch} -->
+            <!-- Stores selection combobox -->
+            </div>
+            <div class="slds-col">
+              <c-combobox name=comboboxStores label="Stores" options={getOptionsStores} value={valueStores}
+                multiselect="true" autocomplete="true" onchange={handleComboboxStoresChange}
+                disabled={isComboboxStoresDisabled}></c-combobox>
+
+              <!-- lazy-search="true" onsearch={handleComboboxStoreSearch} -->
+              <!-- Owners selection combobox -->
+            </div>
+            <div class="slds-col">
+              <c-combobox name=comboboxOwners label="Owners" options={getOptionsOwners} value={valueOwners}
+                multiselect="true" autocomplete="true" onchange={handleComboboxOwnersChange}
+                disabled={isComboboxOwnersDisabled}></c-combobox>
+
+              <!-- lazy-search="true" onsearch={handleComboboxOwnersSearch} -->
+            </div>
+            <div class="slds-col">
+              <button class="slds-button slds-button_brand" onclick={handleClickBnt} disabled={isBtn}
+                style="margin-top: 5.2%">Select Client</button>
+            </div>
+          </div>
+        </lightning-card>
+
+        <!-- Section: Results Display -->
+        <!-- Card for displaying results and additional filter options -->
+        <lightning-card>
+          <!-- Results header -->
+          <div>
+            <c-header-gen icon-name = "utility:chevronright"  header-title=" Result" is-heading1></c-header-gen>
+          </div>
+           <!-- Grid layout for search and filter options -->
+           <div class="slds-grid slds-wrap">
+            <!-- ...additional content for displaying and filtering results... -->
+            <!-- This includes search inputs, comboboxes for filtering, data table display, and action buttons. -->
+            <div class="slds-col  slds-large-size_10-of-12">
+              <div style="margin: 1%" if:true={showTable}>
+
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col  slds-large-size_2-of-12">
+
+                    <div onchange={handleSearchTableChange}>
+                      <lightning-input value={searchTableString} name="enter-search" type="search"
+                        is-loading={isLoading}></lightning-input>
+                    </div>
+                  </div>
+                  <div class="slds-col  slds-large-size_2-of-12"></div>
+                  <div class="slds-col  slds-large-size_2-of-12">
+                    <lightning-combobox name="main address’s countries" placeholder="main address’s countries"
+                      value={valueMainAddress} options={optionsMainAddress}
+                      onchange={handleChangeMainAddress}></lightning-combobox>
+                    <div class="slds-text-title_bold"><template if:true={valueMainAddress}>
+                        <span class="slds-text-link slds-text-title_bold" style="margin-left: 20px"
+                          onclick={handleResetOptionsCountrys}>
+                          Reset
+                        </span>
+                      </template>
+                    </div>
+                  </div>
+                  <div class="slds-col  slds-large-size_2-of-12">
+                    <lightning-combobox name="client’s main boutiques" placeholder="client’s main boutiques"
+                      value={valueClientsMain} options={optionsClientsMain}
+                      onchange={handleChangeClientsMain}></lightning-combobox>
+                    <div class="slds-text-title_bold"><template if:true={valueClientsMain}>
+                        <span class="slds-text-link slds-text-title_bold" style="margin-left: 20px"
+                          onclick={handleResetOptionsStores}>
+                          Reset
+                        </span>
+                      </template>
+                    </div>
+                  </div>
+                  <div class="slds-col  slds-large-size_2-of-12">
+                    <lightning-combobox name="client segment" placeholder="client segment" value={valueClientSegment}
+                      options={optionsClientSegment} onchange={handleChangeClientSegment}></lightning-combobox>
+                    <div class="slds-text-title_bold"><template if:true={valueClientSegment}>
+                        <span class="slds-text-link slds-text-title_bold" style="margin-left: 20px"
+                          onclick={handleResetOptionsSegments}>
+                          Reset
+                        </span>
+                      </template>
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                  <div class="slds-text-title_bold">
+                    <span style="font-size: larger; color: rgb(2, 97, 12);">{selectedRows.length}</span> of <span
+                      style="font-size: larger; color: rgb(2, 97, 12);">{resultData.length}</span> Selected
+                    <template if:true={showSelectDeselect}>
+                      <span class="slds-text-link slds-text-title_bold" style="margin-left: 20px"
+                        onclick={handleSelectDeselectClick}>
+                        {selectDeselectText}
+                      </span>
+                    </template>
+                  </div>
+                  <div class="slds-text-title_bold" style="margin-left: auto; margin-right: auto; ">
+                    <span style="font-size: larger; color: rgb(2, 97, 12);">{filterResulteData.length}</span>
+                    <span style="margin-left: 5px; color: rgb(7, 7, 7);">Results after filtered</span>
+                  </div>
+                </div>
+                <div style="height: 700px;">
+                  <lightning-datatable key-field="Id" data={displayedData} show-row-number-column
+                    row-number-offset={rowOffset} columns={visibleColumns} onrowselection={getSelected}
+                    onloadmore={loadMoreData} enable-infinite-loading={enableInfiniteLoading}
+                    selected-rows={selectedRows}>
+                  </lightning-datatable>
+                </div>
+              </div>
+            </div>
+            <div class="slds-col  slds-large-size_2-of-12">
+              <br>
+              <c-header-gen icon-name = "utility:chevronright" header-title=" New Main SA" is-heading1></c-header-gen>
+              <div style="margin: 3%">
+
+                <c-combobox name="comboboxCountrySA" label="CountrySA" options={optionsCountrySA} value={valueCountrySA}
+                  multiselect="true" autocomplete="true" onchange={handleComboboxCountrySAChange}
+                  disabled={isComboboxCountrySADisabled}></c-combobox>
+
+                <c-combobox name="comboboxStoreSA" label="StoresSA" options={optionsStoresSA} value={valueStoreSA}
+                  multiselect="true" autocomplete="true" onchange={handleComboboxStoreSAChange}
+                  disabled={isComboboxStoreSADisabled}></c-combobox>
+
+                <div onchange={handleSearchChange}>
+                  <lightning-input label="Search Owners" name="enter-search" disabled={isSearchOwnerSADisabled}
+                    type="search"></lightning-input>
+                </div>
+                <lightning-card>
+                  <div class="slds-card__body_inner">
+
+                    <template if:true={optionsOwnersSAFiltered}>
+
+                      <div class="slds-scrollable_y" style="height:32rem;width:15rem" tabindex="0">
+                        <div class="slds-box slds-theme_default">
+
+                          <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                            <template for:each={optionsOwnersSAFiltered} for:item="option">
+                              <!-- <div if:true={optionsOwnersSAName in option.Name}  ></div> -->
+                              <lightning-layout-item key={option.Id} size="12" class="slds-var-p-around_x-small">
+                                <!-- Start owner tile -->
+
+                                <lightning-card hide-header class="owners-tile">
+                                  <div class="slds-var-p-horizontal_small owners-body">
+                                    <div class="slds-media">
+                                      <div class="slds-media__figure">
+
+                                        <lightning-input name="radioGroup" label={option.Name} value={option.value}
+                                          onchange={handleRadioChange} type="radio"></lightning-input>
+                                        <!-- class="slds-m-around_x-small" -->
+
+                                        <p class="slds-var-m-bottom_xx-small slds-text-heading_small">
+                                          {option.mainBoutique}</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </lightning-card>
+                                <!-- End owner tile -->
+                              </lightning-layout-item>
+                            </template>
+                          </lightning-layout>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                </lightning-card>
+              </div>
+              <button class="slds-button slds-button_success" style="margin-top: 0.2%;" onclick={handleClickNewMainSA}
+                disabled={isBtnSA}>Save</button>
+              <button class="slds-button slds-button_destructive" style="margin-top: 0.2%;" onclick={getAllAccounts}>Cancel</button>
+            </div>
+          </div>
+        </lightning-card>
+
+      </lightning-tab>
+
+      <!-- Placeholder for Mass Reallocation tab -->
+      <lightning-tab label="Mass Reallocation">
+        <!-- Future content for Mass Reallocation feature -->
+      </lightning-tab>
+
+    </lightning-tabset>
+  </lightning-card>
+</template>

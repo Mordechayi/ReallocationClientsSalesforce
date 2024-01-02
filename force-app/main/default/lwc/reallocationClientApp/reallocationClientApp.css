@@ -1,0 +1,88 @@
+.container {
+    display: inline-block;
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    background-color: #fff;
+    border: 2px solid #2196F3;
+    border-radius: 50%;
+}
+
+.container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+.container input:checked ~ .checkmark {
+    height: 18px;  /* Keep the height the same as the unchecked checkbox */
+    width: 18px;   /* Keep the width the same as the unchecked checkbox */
+    background-color: #2196F3;
+    border: 2px solid #2196F3;
+    background-size: 30%;  /* Adjust the background size to change the filling size */
+}
+
+.checkmark:after {
+    content: '';
+    position: absolute;
+    display: none;
+}
+
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.container .checkmark:after {
+    left: 6px;
+    top: 3px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.owners-tile {
+    border: 1px solid #d2955d;
+    border-radius: .35rem;
+    display: block;
+}
+
+.record-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d8dde6; /* Example border color */
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  background-color: white;
+}
+
+.record-name {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.record-location {
+  color: #706e6b; /* Example gray text color */
+}
+.slds-text-link {
+    cursor: pointer;
+    color: #0070d2; /* Example color */
+    text-decoration: underline;
+}
+.slds-text-title_bold {
+    font-weight: bold; /* Ensures the text is bold */
+}
